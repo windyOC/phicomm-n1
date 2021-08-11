@@ -11,15 +11,15 @@ on:
 #  watch:
 #    types: started
 
-env:
-  RELEASE_SOURCE_TAG: v2017.11
-  BUILD_MINIMAL: yes
-  KERNEL_ONLY: no
-  KERNEL_CONFIGURE: no
-  BOARD: orangepilite
-  BRANCH: next
-  RELEASE: jessie
-  BUILD_DESKTOP: no
+#env:
+#  RELEASE_SOURCE_TAG: v2017.11
+#  BUILD_MINIMAL: yes
+#  KERNEL_ONLY: no
+#  KERNEL_CONFIGURE: no
+#  BOARD: orangepilite
+#  BRANCH: next
+#  RELEASE: jessie
+#  BUILD_DESKTOP: no
 
 jobs:
   build:
