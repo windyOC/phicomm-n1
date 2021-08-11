@@ -53,4 +53,4 @@ jobs:
       if: steps.build.outputs.status == 'success'
       with:
         name: Armbian_firmware
-        path: /tmp/Armbian.tar.bz2
+        path: /tmp/Armbian.tar.gz
