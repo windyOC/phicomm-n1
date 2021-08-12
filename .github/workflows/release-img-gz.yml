@@ -47,7 +47,7 @@ jobs:
         cd phicomm-n1
         sudo -E ./compile.sh BOARD=arm-64 BRANCH=current RELEASE=focal BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes USE_CCACHE=yes
         echo "::set-output name=status::success"
-        tar c - output/images/*.img | xz --9ev -T0 - > /tmp/Armbian.tar.xz 
+        tar c - output/images/*.img | xz -9ev -T0 - > /tmp/Armbian.tar.xz 
     - name: Upload Armbian image
       uses: actions/upload-artifact@master
       if: steps.build.outputs.status == 'success'
