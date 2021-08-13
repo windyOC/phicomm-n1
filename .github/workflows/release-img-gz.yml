@@ -53,5 +53,5 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: steps.build.outputs.status == 'success' && !cancelled()
       with:
-        tag_name: 
+        tag_name: ${{step.build.output.tag}}
         files: /tmp/Armbian**
