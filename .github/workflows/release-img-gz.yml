@@ -50,6 +50,6 @@ jobs:
         tar c - output/images/*.img | xz -9ev -T0 - > /tmp/Armbian-N1-$(uname -r)-$(date +"%Y.%m.%d-%H%M").tar.xz 
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      if: startsWith(github.ref, '*')
       with:
-        files: /tmp/Armbian*.tar.xz
+        files: /tmp/Armbian**
