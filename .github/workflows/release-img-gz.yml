@@ -52,4 +52,5 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: steps.build.outputs.status == 'success' && !cancelled()
       with:
+        tag_name: Armbian-N1-$(uname -r)-$(date +"%Y.%m.%d-%H%M")
         files: /tmp/Armbian**
