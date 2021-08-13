@@ -54,4 +54,4 @@ jobs:
       if: steps.build.outputs.status == 'success' && !cancelled()
       with:
         tag_name: ${{step.build.output.tag}}
-        files: /tmp/Armbian**
+        files: /tmp/Armbian*
