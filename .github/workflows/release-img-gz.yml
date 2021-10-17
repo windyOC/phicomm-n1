@@ -43,6 +43,10 @@ jobs:
       run: |
         git clone https://github.com/windyOC/phicomm-n1.git
 
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+    
     - name: Use Cache 
       id: cache-build
       uses: actions/cache@v2
@@ -60,11 +64,6 @@ jobs:
         echo "::set-output name=status::success"
         echo "::set-output name=tag::$(date +"%Y.%m.%d-%H%M")"
         tar c - output/images/*.img | xz -9ev -T0 - > /tmp/Armbian-N1-$(date +"%Y.%m.%d-%H%M").tar.xz 
-
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
 
     - name: Release
       uses: softprops/action-gh-release@v1
