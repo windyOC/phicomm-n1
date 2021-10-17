@@ -41,7 +41,7 @@ jobs:
 
     - name: Download source code
       run: |
-        git clone https://github.com/yunsur/phicomm-n1.git
+        git clone https://github.com/windyOC/phicomm-n1.git
 
     - name: Use Cache 
       id: cache-build
