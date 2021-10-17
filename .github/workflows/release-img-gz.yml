@@ -62,6 +62,8 @@ jobs:
       with:
         path: ~/phicomm-n1/cache/*
         key: ${{ runner.os }}-ccache-${{ steps.date.outputs.date }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-
 
     - name: Release
       uses: softprops/action-gh-release@v1
