@@ -38,20 +38,31 @@ jobs:
         sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
+
     - name: Download source code
       run: |
         git clone https://github.com/yunsur/phicomm-n1.git
+
     - name: Build Armbian
       id: build
       run: |
         cd phicomm-n1
-        sudo -E ./compile.sh BOARD=arm-64 BRANCH=current RELEASE=focal BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no
+        sudo -E ./compile.sh BOARD=arm-64 BRANCH=current RELEASE=focal BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
         echo "::set-output name=status::success"
         echo "::set-output name=tag::$(date +"%Y.%m.%d-%H%M")"
         tar c - output/images/*.img | xz -9ev -T0 - > /tmp/Armbian-N1-$(date +"%Y.%m.%d-%H%M").tar.xz 
+
     - name: Get current date
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Cache Ccache
+      id: cache-ccache
+      uses: actions/cache@v2
+      with:
+        path: /usr/lib/ccache
+        key: ${{ runner.os }}-ccache-${{ steps.date.outputs.date }}
+
     - name: Release
       uses: softprops/action-gh-release@v1
       if: steps.build.outputs.status == 'success' && !cancelled()
