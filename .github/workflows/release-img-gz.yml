@@ -43,16 +43,17 @@ jobs:
       run: |
         git clone https://github.com/windyOC/phicomm-n1.git
 
-    - name: Get current date
+    - name: Get current date and head sha1
       id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-    
+      run: |
+        echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        echo "::set-output name=sha::$(git rev-parse --short HEAD)"
     - name: Use Cache 
       id: cache-build
       uses: actions/cache@v2
       with:
         path: ~/cache/*
-        key: ${{ runner.os }}-ccache-${{ steps.date.outputs.date }}
+        key: ${{ runner.os }}-ccache-${{ steps.date.outputs.date }}-${{ steps.date.outputs.sha }}
         restore-keys: |
           ${{ runner.os }}-ccache-
 
