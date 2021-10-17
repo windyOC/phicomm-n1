@@ -38,10 +38,10 @@ jobs:
         sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
-        sudo -E apt-key adv --keyserver pool.sks-keyservers.net --recv-keys 0EBFCD88 
-        sudo -E echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" > /etc/apt/sources.list.d/docker.list
-        sudo -E apt update
-        sudo -E apt install docker-ce -y -qq
+#        sudo -E apt-key adv --keyserver pool.sks-keyservers.net --recv-keys 0EBFCD88 
+#        sudo -E echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" > /etc/apt/sources.list.d/docker.list
+#        sudo -E apt update
+#        sudo -E apt install docker-ce -y -qq
 
     - name: Download source code
       run: |
