@@ -5,7 +5,7 @@ on:
 #    types: published
   push:
     branches:
-      - main
+      - focal
   schedule:
     - cron: 0 3 * * 5
 #  watch:
@@ -38,20 +38,38 @@ jobs:
         sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
+
     - name: Download source code
       run: |
         git clone https://github.com/yunsur/phicomm-n1.git
+
+
     - name: Build Armbian
       id: build
       run: |
         cd phicomm-n1
-        sudo -E ./compile.sh BOARD=arm-64 BRANCH=current RELEASE=Hirsute BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes USE_CCACHE=yes
+        sudo -E ./compile.sh BOARD=arm-64 BRANCH=current RELEASE=hiresute BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
         echo "::set-output name=status::success"
         echo "::set-output name=tag::$(date +"%Y.%m.%d-%H%M")"
         tar c - output/images/*.img | xz -9ev -T0 - > /tmp/Armbian-N1-$(date +"%Y.%m.%d-%H%M").tar.xz 
+    #ubuntu release :hiresute(21.04)｜focal(20.04)|bionic(18.04)|xenial(16.04)
+    #debian release :bullseye(debian 11)|buster(debian 10)|stretch(debian 9)|jessie(debian 8)
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Use Cache 
+      id: cache-build
+      uses: actions/cache@v2
+      with:
+        path: ~/phicomm-n1/cache/*
+        key: ${{ runner.os }}-ccache-${{ steps.date.outputs.date }}
+        restore-keys: ${{ runner.os }}-ccache-
+
     - name: Release
       uses: softprops/action-gh-release@v1
       if: steps.build.outputs.status == 'success' && !cancelled()
       with:
-        tag_name: ${{github.ref}}
+        tag_name: Ubuntu-20.04-LTS(Focal)-${{ steps.date.outputs.date }}
         files: /tmp/Armbian*
