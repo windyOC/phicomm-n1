@@ -42,6 +42,14 @@ jobs:
     - name: Download source code
       run: |
         git clone https://github.com/yunsur/phicomm-n1.git
+        
+    - name: Use Cache 
+      id: cache-build
+      uses: actions/cache@v2
+      with:
+        path: ~/phicomm-n1/cache/*
+        key: ${{ runner.os }}-ccache-${{ steps.date.outputs.date }}
+        restore-keys: ${{ runner.os }}-ccache-
 
     - name: Build Armbian
       id: build
@@ -57,14 +65,6 @@ jobs:
     - name: Get current date
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
-    - name: Use Cache 
-      id: cache-build
-      uses: actions/cache@v2
-      with:
-        path: ~/phicomm-n1/cache/*
-        key: ${{ runner.os }}-ccache-${{ steps.date.outputs.date }}
-        restore-keys: ${{ runner.os }}-ccache-
 
     - name: Release
       uses: softprops/action-gh-release@v1

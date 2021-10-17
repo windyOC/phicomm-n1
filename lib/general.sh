@@ -658,6 +658,7 @@ function distros_options() {
 function set_distribution_status() {
 
 	local distro_support_desc_filepath="${SRC}/${DISTRIBUTIONS_DESC_DIR}/${RELEASE}/support"
+	echo ${distro_support_desc_filepath}
 	if [[ ! -f "${distro_support_desc_filepath}" ]]; then
 		exit_with_error "Distribution ${distribution_name} does not exist"
 	else
