@@ -41,7 +41,7 @@ jobs:
 
     - name: Download source code
       run: |
-        git clone https://github.com/windyOC/phicomm-n1.git
+        git clone -b focal --single-branch https://github.com/windyOC/phicomm-n1.git
 
     - name: Get current date and head sha1
       id: date
