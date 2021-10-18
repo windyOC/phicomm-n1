@@ -34,8 +34,8 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo swapoff /swapfile || echo "no swap,continue!" || exit
-        sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo swapoff -a || echo "no swap,continue!" || exit
+        sudo rm -rf /.swap* /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
 #        sudo -E apt-key adv --keyserver pool.sks-keyservers.net --recv-keys 0EBFCD88 
@@ -57,6 +57,8 @@ jobs:
 
     - name: Build Armbian
       id: build
+      env:
+        DEBIAN_FRONTEND: noninteractive
       run: |
         cd phicomm-n1
         sudo -E ./compile.sh docker BOARD=arm-64 BRANCH=current RELEASE=hirsute BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
