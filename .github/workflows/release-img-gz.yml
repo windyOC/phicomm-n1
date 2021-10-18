@@ -58,7 +58,7 @@ jobs:
     - name: Build Armbian
       id: build
       env:
-        DEBIAN_FRONTEND: noninteractive
+        shell: 'script -q -e -c "bash {0}"'
       run: |
         cd phicomm-n1
         sudo -E ./compile.sh docker BOARD=arm-64 BRANCH=current RELEASE=hirsute BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
