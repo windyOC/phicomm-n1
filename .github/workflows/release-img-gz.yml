@@ -34,7 +34,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo swapoff /swapfile || echo "no swap,continue!" || exit
+        sudo swapoff -a || echo "no swap,continue!" || exit
         sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
@@ -53,7 +53,7 @@ jobs:
       uses: actions/cache@v2
       if: always()
       with:
-        path: ~/cache/*
+        path: /tmp/armbian-cache.tar.xz
         key: ${{ runner.os }}-ccache-${{ steps.date.outputs.date }}-${{ steps.date.outputs.sha }}
         restore-keys: |
           ${{ runner.os }}-ccache-
@@ -62,10 +62,14 @@ jobs:
       id: build
       run: |
         cd phicomm-n1
-        sudo -E ./compile.sh BOARD=arm-64 BRANCH=current RELEASE=focal BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
+        tar -xf /tmp/armbian-cache.tar.xz -C /var/lib/docker/volumes && rm -f /tmp/armbian-cache.tar.xz && echo "cache restore success"
+        sudo -E ./compile.sh docker BOARD=arm-64 BRANCH=current RELEASE=focal BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
         echo "::set-output name=status::success"
         echo "::set-output name=tag::$(date +"%Y.%m.%d-%H%M")"
-        tar c - output/images/*.img | xz -9ev -T0 - > /tmp/Armbian-N1-$(date +"%Y.%m.%d-%H%M").tar.xz 
+        tar c output/images/*.img | xz -9ev -T0 - > /tmp/Armbian-N1-$(date +"%Y.%m.%d-%H%M").tar.xz 
+        sudo -E tar c /var/lib/docker/volumes/armbian* | xz -9ev -T0 - > /tmp/armbian-cache.tar.xz
+
+
 
     - name: Release
       uses: softprops/action-gh-release@v1
