@@ -8,7 +8,7 @@ on:
       - focal
 jobs:
   build:
-    name:focal
+    name: focal
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v1
