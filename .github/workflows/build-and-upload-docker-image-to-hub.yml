@@ -3,18 +3,26 @@ name: Build Docker image
 on:
   schedule:
     - cron: '0 0 */15 * *'
+  push:
+    branches:
+      - focal
 jobs:
   build:
-    name: latest
+    name:focal
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v1
-     - name: Login to DockerHub Registry
-       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin   
+
+     - name: Login to Docker Hub
+       uses: docker/login-action@v1
+       with:
+         username: ${{ secrets.DOCKER_HUB_USERNAME }}
+         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}  
+
      - name: Build Docker image
        run: |
-        ./compile.sh docker BOARD="arm-64" ARCH="arm64" BRANCH="current" RELEASE="focal" KERNEL_ONLY="no" KERNEL_CONFIGURE="no" BUILD_MINIMAL="no" BUILD_DESKTOP="no"
-        docker tag armbian:$(cat VERSION) armbian/build:latest
-     - name: Push Docker image
-       run: docker push armbian/build:latest
+        ./compile.sh docker BOARD=arm-64 BRANCH=current RELEASE=focal BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
+        docker tag armbian:$(cat VERSION) armbian-build:focal
 
+     - name: Push Docker image
+       run: docker push windyoc/armbian-build:focal
