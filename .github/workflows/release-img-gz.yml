@@ -47,14 +47,6 @@ jobs:
       run: |
         git clone -b main --single-branch https://github.com/windyOC/phicomm-n1.git
 
-    - name: Use Cache 
-      id: cache-build
-      uses: actions/cache@v2
-      with:
-        path: /var/lib/docker/volumes/armbian*
-        key: ${{ runner.os }}-cache-main-${{ steps.date.outputs.date }}
-        restore-keys: ${{ runner.os }}-ccache-main-
-
     - name: Build Armbian
       id: build
       run: |
