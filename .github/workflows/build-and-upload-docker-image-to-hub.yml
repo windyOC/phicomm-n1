@@ -22,7 +22,7 @@ jobs:
      - name: Build Docker image
        run: |
         ./compile.sh docker BOARD=arm-64 BRANCH=current RELEASE=focal BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
-        docker tag armbian:$(cat VERSION) armbian-build:focal
+        docker tag armbian:$(cat VERSION) windyoc/armbian-build:focal
 
      - name: Push Docker image
        run: docker push windyoc/armbian-build:focal
