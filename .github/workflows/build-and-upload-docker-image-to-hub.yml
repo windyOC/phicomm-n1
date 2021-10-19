@@ -13,8 +13,7 @@ jobs:
        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin   
      - name: Build Docker image
        run: |
-        ./compile.sh docker BOARD="arm-64" ARCH="arm64" BRANCH="current" RELEASE="focal" KERNEL_ONLY="no" KERNEL_CONFIGURE="no" BUILD_MINIMAL="no" BUILD_DESKTOP="no"
-        docker tag armbian:$(cat VERSION) armbian/build:latest
+        ./compile.sh docker BOARD=arm-64 BRANCH=current RELEASE=hirsute BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img MAINLINE_MIRROR=google FORCE_USE_RAMDISK=yes WIREGUARD=no USE_CCACHE=yes
+        docker tag armbian:$(cat VERSION) armbian/build:main
      - name: Push Docker image
-       run: docker push armbian/build:latest
-
+       run: docker push armbian/build:main

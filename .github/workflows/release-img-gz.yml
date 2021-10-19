@@ -74,5 +74,5 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: steps.build.outputs.status == 'success' && !cancelled()
       with:
-        tag_name: Ubuntu-21.04-LTS(Hiresute)-${{ steps.date.outputs.date }}
+        tag_name: Ubuntu-21.04-LTS(Hirsute)-${{ steps.date.outputs.date }}
         files: /tmp/Armbian*
