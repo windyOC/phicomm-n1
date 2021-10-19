@@ -25,4 +25,4 @@ jobs:
         docker tag armbian:$(cat VERSION) armbian-build:main
 
      - name: Push Docker image
-       run: docker push armbian-build:main
+       run: docker push windyoc/armbian-build:main
