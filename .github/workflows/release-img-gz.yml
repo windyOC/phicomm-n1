@@ -48,6 +48,7 @@ jobs:
       run: |
         echo "::set-output name=date::$(date +'%Y-%m-%d')"
         echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+
     - name: Use Cache 
       id: cache-build
       uses: actions/cache@v2
@@ -68,7 +69,7 @@ jobs:
         echo "::set-output name=tag::$(date +"%Y.%m.%d-%H%M")"
         tar c output/images/*.img | xz -9ev -T0 - > /tmp/Armbian-N1-$(date +"%Y.%m.%d-%H%M").tar.xz 
         sudo su root
-        tar c /var/lib/docker/volumes/armbian* | xz -9ev -T0 - > /tmp/armbian-cache.tar.xz
+        tar c /var/lib/docker/volumes/* | xz -9ev -T0 - > /tmp/armbian-cache.tar.xz
 
 
 
