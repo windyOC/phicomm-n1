@@ -67,7 +67,7 @@ jobs:
         echo "::set-output name=status::success"
         echo "::set-output name=tag::$(date +"%Y.%m.%d-%H%M")"
         tar c output/images/*.img | xz -9ev -T0 - > /tmp/Armbian-N1-$(date +"%Y.%m.%d-%H%M").tar.xz 
-        sudo chmod 777 -R /var/lib/docker/volumes/*
+        sudo su root
         tar c /var/lib/docker/volumes/armbian* | xz -9ev -T0 - > /tmp/armbian-cache.tar.xz
 
 
